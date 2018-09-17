@@ -7,10 +7,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import projektovanje.bin.oprema.Artikal;
 import projektovanje.bin.zaposleni.Zaposleni;
-import projektovanje.connect.Konekcija;
+import projektovanje.connect.KonekcijaNET;
 import projektovanje.dto.DTOArtikal;
 
 public class SkladistarController {
+    
+    private KonekcijaNET konekcija=KonekcijaNET.getInstance();
     
     public SkladistarController(){
         
@@ -18,7 +20,6 @@ public class SkladistarController {
     
     public boolean dodajArtikal(Integer idArtikla, String naziv, Integer kolicinaNaStanju, Double jedinicnaCijena,  String tip, String barKod, Zaposleni zaposleni){
         Artikal artikal=new Artikal(idArtikla,naziv,kolicinaNaStanju,jedinicnaCijena,tip,barKod,zaposleni);
-        Konekcija konekcija=new Konekcija();
         DTOArtikal dtoArtikal=new DTOArtikal(artikal);
         try{
             konekcija.os.writeObject(new String("ADD_PRODUCT"));
@@ -38,7 +39,6 @@ public class SkladistarController {
     
     public boolean azurirajArtikal(Integer idArtikla, String naziv, Integer kolicinaNaStanju, Double jedinicnaCijena,  String tip, String barKod, Zaposleni zaposleni){
         Artikal artikal=new Artikal(idArtikla,naziv,kolicinaNaStanju,jedinicnaCijena,tip,barKod,zaposleni);
-        Konekcija konekcija=new Konekcija();
         DTOArtikal dtoArtikal=new DTOArtikal(artikal);
         try{
             konekcija.os.writeObject(new String("UPDATE_PRODUCT"));
@@ -57,7 +57,6 @@ public class SkladistarController {
     }
     
     public List<DTOArtikal> prikaziStanje(){
-        Konekcija konekcija=new Konekcija();
         ArrayList<DTOArtikal> artikli=new ArrayList<>();
         try{
             konekcija.os.writeObject(new String("LIST_PRODUCTS"));

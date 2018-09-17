@@ -10,19 +10,30 @@ import projektovanje.bin.oprema.IOprema;
 import projektovanje.bin.plata.Plata;
 import projektovanje.bin.transakcije.UlaznaFaktura;
 import projektovanje.bin.zaposleni.Zaposleni;
-import projektovanje.connect.Konekcija;
+import projektovanje.connect.KonekcijaNET;
 import projektovanje.dto.DTOPlata;
 import projektovanje.dto.DTOUlaznaFaktura;
 
 public class RacunovodjaController {
+    
+    private KonekcijaNET konekcija=KonekcijaNET.getInstance();
 
     public RacunovodjaController() {
 
     }
 
-    public boolean dodajPlatu(Integer id, Double doprinosZaPenziono, Double doprinosZaZdravstveno, Double doprinosZaDjecijuZastitu, Double doprinosZaZaposljavanje, Double stopaPoreza, Double stopaZaPenziono, Double stopaZaZdravstveno, Double stopaZaDjecijuZastitu, Double stopaZaZaposljavanje, Double netoTekuciRad, Double netoMinuliRad, Double bruto, Double porezNaPlatu, Date datumOd, Date datumDo) {
-        Konekcija konekcija = new Konekcija();
-        Plata plata = new Plata(id, doprinosZaPenziono, doprinosZaZdravstveno, doprinosZaDjecijuZastitu, doprinosZaZaposljavanje, stopaPoreza, stopaZaPenziono, stopaZaZdravstveno, stopaZaDjecijuZastitu, stopaZaZaposljavanje, netoTekuciRad, netoMinuliRad, bruto, porezNaPlatu, datumOd, datumDo);
+    public boolean dodajPlatu(Integer id, Double doprinosZaPenziono, 
+            Double doprinosZaZdravstveno, Double doprinosZaDjecijuZastitu, 
+            Double doprinosZaZaposljavanje, Double stopaPoreza, 
+            Double stopaZaPenziono, Double stopaZaZdravstveno, 
+            Double stopaZaDjecijuZastitu, Double stopaZaZaposljavanje, 
+            Double netoTekuciRad, Double netoMinuliRad, Double bruto,
+            Double porezNaPlatu, Date datumOd, Date datumDo) {
+        Plata plata = new Plata(id, doprinosZaPenziono, doprinosZaZdravstveno, 
+                doprinosZaDjecijuZastitu, doprinosZaZaposljavanje, stopaPoreza,
+                stopaZaPenziono, stopaZaZdravstveno, stopaZaDjecijuZastitu, 
+                stopaZaZaposljavanje, netoTekuciRad, netoMinuliRad, bruto, 
+                porezNaPlatu, datumOd, datumDo);
         DTOPlata dtoPlata = new DTOPlata(plata);
         try {
             konekcija.os.writeObject(new String("ADD_PAYMENT"));
@@ -40,9 +51,18 @@ public class RacunovodjaController {
         return false;
     }
 
-    public boolean azurirajPlatu(Integer id, Double doprinosZaPenziono, Double doprinosZaZdravstveno, Double doprinosZaDjecijuZastitu, Double doprinosZaZaposljavanje, Double stopaPoreza, Double stopaZaPenziono, Double stopaZaZdravstveno, Double stopaZaDjecijuZastitu, Double stopaZaZaposljavanje, Double netoTekuciRad, Double netoMinuliRad, Double bruto, Double porezNaPlatu, Date datumOd, Date datumDo) {
-        Konekcija konekcija = new Konekcija();
-        Plata plata = new Plata(id, doprinosZaPenziono, doprinosZaZdravstveno, doprinosZaDjecijuZastitu, doprinosZaZaposljavanje, stopaPoreza, stopaZaPenziono, stopaZaZdravstveno, stopaZaDjecijuZastitu, stopaZaZaposljavanje, netoTekuciRad, netoMinuliRad, bruto, porezNaPlatu, datumOd, datumDo);
+    public boolean azurirajPlatu(Integer id, Double doprinosZaPenziono, 
+            Double doprinosZaZdravstveno, Double doprinosZaDjecijuZastitu, 
+            Double doprinosZaZaposljavanje, Double stopaPoreza, 
+            Double stopaZaPenziono, Double stopaZaZdravstveno, 
+            Double stopaZaDjecijuZastitu, Double stopaZaZaposljavanje,
+            Double netoTekuciRad, Double netoMinuliRad, Double bruto, 
+            Double porezNaPlatu, Date datumOd, Date datumDo) {
+        Plata plata = new Plata(id, doprinosZaPenziono, doprinosZaZdravstveno, 
+                doprinosZaDjecijuZastitu, doprinosZaZaposljavanje, stopaPoreza, 
+                stopaZaPenziono, stopaZaZdravstveno, stopaZaDjecijuZastitu, 
+                stopaZaZaposljavanje, netoTekuciRad, netoMinuliRad, bruto, 
+                porezNaPlatu, datumOd, datumDo);
         DTOPlata dtoPlata = new DTOPlata(plata);
         try {
             konekcija.os.writeObject(new String("UPDATE_PAYMENT"));
@@ -61,7 +81,6 @@ public class RacunovodjaController {
     }
 
     public List<DTOPlata> pregledajListuPlata() {
-        Konekcija konekcija = new Konekcija();
         ArrayList<DTOPlata> listaPlata = new ArrayList<>();
         try {
             konekcija.os.writeObject(new String("LIST_PAYMENT"));
@@ -74,9 +93,12 @@ public class RacunovodjaController {
         return listaPlata;
     }
 
-    public boolean dodajFakturu(Integer idFakute, Zaposleni zaposleni, String brojRacina, String vrstaTransakcije, Double kolicina, String jedinicaMjere, Double cijena, String kupac, Date datum, List<? extends IOprema> kupljenaRoba) {
-        Konekcija konekcija = new Konekcija();
-        UlaznaFaktura faktura = new UlaznaFaktura(idFakute, zaposleni, brojRacina, vrstaTransakcije, kolicina, jedinicaMjere, cijena, kupac, datum, kupljenaRoba);
+    public boolean dodajFakturu(Integer idFakute, Zaposleni zaposleni, 
+            String brojRacina, String vrstaTransakcije, Double kolicina, 
+            String jedinicaMjere, Double cijena, String kupac, Date datum, 
+            List<? extends IOprema> kupljenaRoba) {
+        UlaznaFaktura faktura = new UlaznaFaktura(idFakute, zaposleni, brojRacina, 
+                vrstaTransakcije, kolicina, jedinicaMjere, cijena, kupac, datum, kupljenaRoba);
         DTOUlaznaFaktura dtoFaktura = new DTOUlaznaFaktura(faktura);
         try {
             konekcija.os.writeObject(new String("ADD_INVOICE"));
@@ -94,9 +116,12 @@ public class RacunovodjaController {
         return false;
     }
     
-    public boolean azurirajFakturu(Integer idFakute, Zaposleni zaposleni, String brojRacina, String vrstaTransakcije, Double kolicina, String jedinicaMjere, Double cijena, String kupac, Date datum, List<? extends IOprema> kupljenaRoba) {
-        Konekcija konekcija = new Konekcija();
-        UlaznaFaktura faktura = new UlaznaFaktura(idFakute, zaposleni, brojRacina, vrstaTransakcije, kolicina, jedinicaMjere, cijena, kupac, datum, kupljenaRoba);
+    public boolean azurirajFakturu(Integer idFakute, Zaposleni zaposleni, 
+            String brojRacina, String vrstaTransakcije, Double kolicina, 
+            String jedinicaMjere, Double cijena, String kupac, Date datum, 
+            List<? extends IOprema> kupljenaRoba) {
+        UlaznaFaktura faktura = new UlaznaFaktura(idFakute, zaposleni, brojRacina,
+                vrstaTransakcije, kolicina, jedinicaMjere, cijena, kupac, datum, kupljenaRoba);
         DTOUlaznaFaktura dtoFaktura = new DTOUlaznaFaktura(faktura);
         try {
             konekcija.os.writeObject(new String("UPDATE_INVOICE"));
@@ -115,7 +140,6 @@ public class RacunovodjaController {
     }
     
     public List<DTOUlaznaFaktura> pregledajListuFaktura() {
-        Konekcija konekcija = new Konekcija();
         ArrayList<DTOUlaznaFaktura> listaFaktura = new ArrayList<>();
         try {
             konekcija.os.writeObject(new String("LIST_INVOICES"));

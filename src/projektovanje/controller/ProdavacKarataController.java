@@ -8,19 +8,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import projektovanje.bin.karta.Karta;
 import projektovanje.bin.projekcija.Projekcija;
-import projektovanje.connect.Konekcija;
+import projektovanje.connect.KonekcijaNET;
 import projektovanje.dto.DTOKarta;
 import projektovanje.dto.DTOProjekcija;
 import projektovanje.dto.DTORepertoar;
 
 public class ProdavacKarataController {
+    
+    private KonekcijaNET konekcija=KonekcijaNET.getInstance();
 
     public ProdavacKarataController() {
 
     }
 
     public void prodajKartu(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
-        Konekcija konekcija = new Konekcija();
         Karta karta = new Karta(idKarte, datumIzdavanja, cijena, projekcija);
         DTOKarta dtoKarta = new DTOKarta(karta);
         try {
@@ -32,7 +33,6 @@ public class ProdavacKarataController {
     }
 
     public void rezervisiKartu(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
-        Konekcija konekcija = new Konekcija();
         Karta karta = new Karta(idKarte, datumIzdavanja, cijena, projekcija);
         DTOKarta dtoKarta = new DTOKarta(karta);
         try {
@@ -44,7 +44,6 @@ public class ProdavacKarataController {
     }
 
     public void ponistiRezervaciju(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
-        Konekcija konekcija = new Konekcija();
         Karta karta = new Karta(idKarte, datumIzdavanja, cijena, projekcija);
         DTOKarta dtoKarta = new DTOKarta(karta);
         try {
@@ -56,7 +55,6 @@ public class ProdavacKarataController {
     }
     
     public List<DTOProjekcija> pregledProjekcija(){
-        Konekcija konekcija=new Konekcija();
         ArrayList<DTOProjekcija> projekcije=new ArrayList<>();
         try{
             konekcija.os.writeObject("LIST_PROJECTIONS");
@@ -70,7 +68,6 @@ public class ProdavacKarataController {
     }
     
     public List<DTORepertoar> pregledRepertoara(){
-        Konekcija konekcija=new Konekcija();
         ArrayList<DTORepertoar> repertoar=new ArrayList<>();
         try{
             konekcija.os.writeObject("LIST_REPERTOIRE");

@@ -7,18 +7,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import projektovanje.bin.oprema.Oprema;
 import projektovanje.bin.zaposleni.Zaposleni;
-import projektovanje.connect.Konekcija;
+import projektovanje.connect.KonekcijaNET;
 import projektovanje.dto.DTOOprema;
 
 
 public class KinooperaterController {
     
+    private static final KonekcijaNET konekcija=KonekcijaNET.getInstance();
+    
     public KinooperaterController(){
         
     }
     
-    public boolean dodajOpremu(Integer idOpreme, Integer brojInventara, String naziv, Boolean ispravnost, Zaposleni zaposleni){
-        Konekcija konekcija=new Konekcija();
+    public static boolean dodajOpremu(Integer idOpreme, Integer brojInventara, String naziv, Boolean ispravnost, Zaposleni zaposleni){
         Oprema oprema=new Oprema(idOpreme,brojInventara,naziv,ispravnost,zaposleni);
         DTOOprema dtoOprema=new DTOOprema(oprema);
         try{
@@ -37,8 +38,7 @@ public class KinooperaterController {
         return false;
     }
     
-    public boolean azurirajOpremu(Integer idOpreme, Integer brojInventara, String naziv, Boolean ispravnost, Zaposleni zaposleni){
-        Konekcija konekcija=new Konekcija();
+    public static boolean azurirajOpremu(Integer idOpreme, Integer brojInventara, String naziv, Boolean ispravnost, Zaposleni zaposleni){
         Oprema oprema=new Oprema(idOpreme,brojInventara,naziv,ispravnost,zaposleni);
         DTOOprema dtoOprema=new DTOOprema(oprema);
         try{
@@ -57,8 +57,7 @@ public class KinooperaterController {
         return false;
     }
     
-    public List<DTOOprema> pregledajOpremu(){
-        Konekcija konekcija=new Konekcija();
+    public static List<DTOOprema> pregledajOpremu(){
         ArrayList<DTOOprema> oprema=new ArrayList<>();
         try{
             konekcija.os.writeObject(new String("LIST_EQUIPMENT"));
@@ -71,8 +70,7 @@ public class KinooperaterController {
         return oprema;
     }
     
-    public List<DTOOprema> pretraziOpremu(String name){
-        Konekcija konekcija=new Konekcija();
+    public static List<DTOOprema> pretraziOpremu(String name){
         ArrayList<DTOOprema> oprema=new ArrayList<>();
         try{
             konekcija.os.writeObject(new String("GET_EQUIPMENT#"+name));

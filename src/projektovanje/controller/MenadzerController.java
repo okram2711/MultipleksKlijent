@@ -12,22 +12,24 @@ import projektovanje.bin.projekcija.Projekcija;
 import projektovanje.bin.sala.Sala;
 import projektovanje.bin.sala.Sjediste;
 import projektovanje.bin.zaposleni.Zaposleni;
-import projektovanje.connect.Konekcija;
+import projektovanje.connect.KonekcijaNET;
 import projektovanje.dto.DTOFilm;
 import projektovanje.dto.DTOPonuda;
 import projektovanje.dto.DTOProjekcija;
 import projektovanje.dto.DTOSala;
 import projektovanje.dto.DTOZaposleni;
+import projektovanje.dto.IDTO;
 
 public class MenadzerController {
+    
+    private static final KonekcijaNET konekcija=KonekcijaNET.getInstance();
 
     public MenadzerController() {
 
     }
 
-    public boolean dodajProjekciju(Integer idProjekcije, Film film, Date vrijeme, Zaposleni zaposleni) {
+    public static boolean dodajProjekciju(Integer idProjekcije, Film film, Date vrijeme, Zaposleni zaposleni) {
         Projekcija projekcija = new Projekcija(idProjekcije, film, vrijeme, zaposleni);
-        Konekcija konekcija = new Konekcija();
         DTOProjekcija dtoProjekcija = new DTOProjekcija(projekcija);
         try {
             konekcija.os.writeObject(new String("ADD_PROJECTION"));
@@ -45,9 +47,8 @@ public class MenadzerController {
         return false;
     }
 
-    public boolean azurirajProjekciju(Integer idProjekcije, Film film, Date vrijeme, Zaposleni zaposleni) {
+    public static boolean azurirajProjekciju(Integer idProjekcije, Film film, Date vrijeme, Zaposleni zaposleni) {
         Projekcija projekcija = new Projekcija(idProjekcije, film, vrijeme, zaposleni);
-        Konekcija konekcija = new Konekcija();
         DTOProjekcija dtoProjekcija = new DTOProjekcija(projekcija);
         try {
             konekcija.os.writeObject(new String("UPDATE_PROJECTION"));
@@ -65,8 +66,7 @@ public class MenadzerController {
         return false;
     }
     
-    public List<DTOProjekcija> pregledProjekcija(){
-        Konekcija konekcija=new Konekcija();
+    public static List<DTOProjekcija> pregledProjekcija(){
         ArrayList<DTOProjekcija> projekcije=new ArrayList<>();
         try{
             konekcija.os.writeObject("LIST_PROJECTIONS");
@@ -79,9 +79,8 @@ public class MenadzerController {
         return projekcije;
     }
     
-    public boolean dodajSalu(Integer idSale, Integer brojVrsta, Integer brojKolona, List<Sjediste> sjedista) {
+    public static boolean dodajSalu(Integer idSale, Integer brojVrsta, Integer brojKolona, List<Sjediste> sjedista) {
         Sala sala = new Sala(idSale,brojVrsta,brojKolona,sjedista);
-        Konekcija konekcija = new Konekcija();
         DTOSala dtoSala = new DTOSala(sala);
         try {
             konekcija.os.writeObject(new String("ADD_MOVIE_HALL"));
@@ -99,23 +98,22 @@ public class MenadzerController {
         return false;
     }
     
-    public List<DTOZaposleni> prikaziZaposlene() {
-        Konekcija konekcija = new Konekcija();
-        ArrayList<DTOZaposleni> zaposleni = new ArrayList<>();
+    public static List<List<? extends IDTO>> prikaziZaposlene() {
+        List<List<? extends IDTO>> listaZaposlenih = new ArrayList<>();
         try {
             konekcija.os.writeObject(new String("LIST_EMPLOYEES"));
-            zaposleni = (ArrayList<DTOZaposleni>) konekcija.is.readObject();
+            listaZaposlenih = (ArrayList<List<?extends IDTO>>) konekcija.is.readObject();
         } catch (IOException ex) {
             Logger.getLogger(SkladistarController.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SkladistarController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return zaposleni;
+        return listaZaposlenih;
     }
     
-    public boolean dodajFilm(Integer idFilma, Zaposleni zaposleni, String naziv, Integer trajanje,  String opis, String linkTrailera, String tipFilma ) {
+    public static boolean dodajFilm(Integer idFilma, Zaposleni zaposleni, String naziv, 
+            Integer trajanje,  String opis, String linkTrailera, String tipFilma ) {
         Film film=new Film(idFilma,zaposleni,naziv,trajanje,opis, linkTrailera,tipFilma);
-        Konekcija konekcija = new Konekcija();
         DTOFilm dtoFilm=new DTOFilm(film);
         try {
             konekcija.os.writeObject(new String("ADD_MOVIE"));
@@ -133,9 +131,9 @@ public class MenadzerController {
         return false;
     }
     
-    public String azurirajFilm(Integer idFilma, Zaposleni zaposleni, String naziv, Integer trajanje,  String opis, String linkTrailera, String tipFilma ) {
+    public static String azurirajFilm(Integer idFilma, Zaposleni zaposleni, String naziv, 
+            Integer trajanje,  String opis, String linkTrailera, String tipFilma ) {
         Film film=new Film(idFilma,zaposleni,naziv,trajanje,opis, linkTrailera,tipFilma);
-        Konekcija konekcija = new Konekcija();
         DTOFilm dtoFilm=new DTOFilm(film);
         String odgovor="NOK";
         try {
@@ -154,8 +152,7 @@ public class MenadzerController {
         return odgovor;
     }
     
-    public List<DTOFilm> pregledFilma(String imeFilma) {
-        Konekcija konekcija = new Konekcija();
+    public static List<DTOFilm> pregledFilma(String imeFilma) {
         ArrayList<DTOFilm> film = new ArrayList<>();
         try {
             konekcija.os.writeObject(new String("GIVE_ME_MOVIE#"+imeFilma));
@@ -168,9 +165,8 @@ public class MenadzerController {
         return film;
     }
     
-     public boolean dodajPonudu(Integer idPonude, Film film, Date datumPonude, Zaposleni zaposleni) {
+     public static boolean dodajPonudu(Integer idPonude, Film film, Date datumPonude, Zaposleni zaposleni) {
         Ponuda ponuda=new Ponuda(idPonude,film,datumPonude,zaposleni);
-        Konekcija konekcija = new Konekcija();
         DTOPonuda dtoPonuda=new DTOPonuda(ponuda);
         try {
             konekcija.os.writeObject(new String("ADD_OFFER"));
@@ -188,8 +184,7 @@ public class MenadzerController {
         return false;
     }
      
-     public List<DTOPonuda> pregledPonuda() {
-        Konekcija konekcija = new Konekcija();
+     public static List<DTOPonuda> pregledPonuda() {
         ArrayList<DTOPonuda> ponuda = new ArrayList<>();
         try {
             konekcija.os.writeObject(new String("LIST_OFFERS"));
