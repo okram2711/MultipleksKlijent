@@ -15,32 +15,48 @@ import projektovanje.dto.DTORepertoar;
 
 public class ProdavacKarataController {
     
-    private KonekcijaNET konekcija=KonekcijaNET.getInstance();
+    private static KonekcijaNET konekcija=KonekcijaNET.getInstance();
 
     public ProdavacKarataController() {
 
     }
 
-    public void prodajKartu(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
+    public static boolean prodajKartu(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
         Karta karta = new Karta(idKarte, datumIzdavanja, cijena, projekcija);
         DTOKarta dtoKarta = new DTOKarta(karta);
         try {
             konekcija.os.writeObject("SELL_TICKET");
+            if (((String) konekcija.is.readObject()).equals("WICHONE")){
             konekcija.os.writeObject(dtoKarta);
+            if (((String)konekcija.is.readObject()).equals("OK")){
+                return true;
+            }
+            }
         } catch (IOException ex) {
             Logger.getLogger(ProdavacKarataController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProdavacKarataController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
-    public void rezervisiKartu(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
+    public static boolean rezervisiKartu(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {
         Karta karta = new Karta(idKarte, datumIzdavanja, cijena, projekcija);
         DTOKarta dtoKarta = new DTOKarta(karta);
         try {
             konekcija.os.writeObject("RESERVE_TICKET");
+            if (((String) konekcija.is.readObject()).equals("WICHONE")){
             konekcija.os.writeObject(dtoKarta);
+            if (((String)konekcija.is.readObject()).equals("OK")){
+                return true;
+            }
+            } 
         } catch (IOException ex) {
             Logger.getLogger(ProdavacKarataController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ProdavacKarataController.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     public void ponistiRezervaciju(Integer idKarte, Date datumIzdavanja, Double cijena, Projekcija projekcija) {

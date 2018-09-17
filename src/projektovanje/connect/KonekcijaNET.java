@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class KonekcijaNET {
 
-    private static final KonekcijaNET konekcija = new KonekcijaNET();
+    private static KonekcijaNET konekcija = null;
     public static final String CONFIG="properties.config";
 
     private Socket socket;
@@ -38,6 +38,9 @@ public class KonekcijaNET {
     }
 
     public static KonekcijaNET getInstance() {
+        if(konekcija==null){
+            konekcija=new KonekcijaNET();
+        }
         return konekcija;
     }
     
